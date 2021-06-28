@@ -1,0 +1,21 @@
+{
+  "name": "sn8ke",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^7.6.0",
+    "jest": "^27.0.5",
+    "jest-canvas-mock": "^2.3.1"
+  },
+  "dependencies": {
+    "canvas": "^2.8.0"
+  },
+  "transform": {}
+}
