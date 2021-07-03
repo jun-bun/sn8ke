@@ -1,4 +1,5 @@
-import {Field, Snake, Apple} from './env.js';
+import {Field, Snake, Apple, Player} from './env.js';
+import {BasicAi} from './ai-heuristics.js';
 //import {drawField} from './draw.js';
 
 var c = document.getElementById("snakeCanvas");
@@ -30,8 +31,16 @@ function drawField(field){
     }
 }
 
+var player = new Player();
+var computer = new Player();
+var ai = new BasicAi();
+ai.setplayer(computer);
 var field = new Field(20,20);
 field.reset();
+player.field = field;
+computer.field = field;
+player.snake = field.p1;
+computer.snake = field.p2;
 drawField(field);
 var timer;
 timer = setInterval(playGame, 500);
@@ -40,40 +49,45 @@ function playGame(){
         if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
+
+        // player.snake.direction = event.key;
+        //    return;
+
         switch (event.key) {
             case "ArrowDown":
-                p1.direction = event.key;
+                player.snake.direction = event.key;
                 break;
             case "ArrowUp":
-                p1.direction = event.key;
+                player.snake.direction = event.key;
                 break;
             case "ArrowLeft":
-                p1.direction = event.key;
+                player.snake.direction = event.key;
                 break;
             case "ArrowRight":
-                p1.direction = event.key;
+                player.snake.direction = event.key;
                 break;
             default:
-                return; // Quit when this doesn't handle the key event.
+                return ; // Quit when this doesn't handle the key event.
         }
-
         // Cancel the default action to avoid it being handled twice
         event.preventDefault();
     }, true);
-    var p1 = field.p1;
-    p1.moveSnake(p1.direction);
-    field.placeSnake(p1);
-    if (p1.ateApple(field.apple)){
+    var playerResulets = player.makeMove(player.snake.direction);
+    var aiResults = ai.step(aiResults);
+    //p1.moveSnake(p1.direction);
+    if (player.snake.checkCollision(field)){
+        field.reset();
+        window.alert("You died");
+        return true;
+    }
+    else if (computer.snake.checkCollision(field)){
+        field.reset();
+        window.alert("Opponent died");
+    }
+    //field.placeSnake(player.snake);
+    //field.placeSnake(computer.snake);
+    if (player.snake.ateApple(field.apple) || computer.snake.ateApple(field.apple)){
         field.apple = new Apple(field);
     }
     drawField(field);
-    if (p1.checkCollision(field)){
-        field.reset();
-        window.alert("You died");
-        //return true;
-    }
 }
-
-//p1.moveSnake("ArrowDown");
-//field.placeSnake(p1);
-//drawField(field);

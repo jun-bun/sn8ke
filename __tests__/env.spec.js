@@ -1,4 +1,12 @@
-import {Field, Snake, Apple} from './env.js';
+//import {Field, Snake, Apple} from '../env.js';
+
+const {Field, Snake, Apple} = require('../env');
+
+describe("---", ()=>{
+    test('Hello World', ()=>{
+        expect('hello').toEqual('hello');
+    })
+})
 
 describe("Main tests", ()=>{
     test('Create Field 1x1 ', () => {
@@ -12,3 +20,5 @@ describe("Main tests", ()=>{
         expect(field.getFieldState()).toEqual(output);
     });
 });
+
+
