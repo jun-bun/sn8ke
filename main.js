@@ -11,8 +11,8 @@ function drawField(field){
     var bg = '#000000';
     var p1body = '#00FF00';
     var p1head = '#FFFF00';
-    var p2body = '#00FF00';
-    var p2head = '#FFFF00';
+    var p2body = '#FFA500';
+    var p2head = '#0000FF';
     var apple = '#FF0000';
     var colors = [bg, p1body, p1head, p2body, p2head, apple];
     ctx.fillStyle = colors[0]
@@ -42,6 +42,7 @@ computer.field = field;
 player.snake = field.p1;
 computer.snake = field.p2;
 drawField(field);
+var observations;
 var timer;
 timer = setInterval(playGame, 500);
 function playGame(){
@@ -73,16 +74,19 @@ function playGame(){
         event.preventDefault();
     }, true);
     var playerResulets = player.makeMove(player.snake.direction);
-    var aiResults = ai.step(aiResults);
+    observations = ai.makeMove(ai.step(observations));
+
     //p1.moveSnake(p1.direction);
     if (player.snake.checkCollision(field)){
-        field.reset();
+        //field.reset();
         window.alert("You died");
-        return true;
+        clearInterval(timer);
+        //return true;
     }
     else if (computer.snake.checkCollision(field)){
-        field.reset();
+        //field.reset();
         window.alert("Opponent died");
+        clearInterval(timer);
     }
     //field.placeSnake(player.snake);
     //field.placeSnake(computer.snake);

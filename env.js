@@ -11,10 +11,26 @@ class Coordinate{
         else if (direction === "ArrowDown") {y += 1;}
         else if (direction === "ArrowLeft") {x += -1;}
         else if (direction === "ArrowRight") {x += 1;}
-        return [x,y];
+        return new Coordinate(x,y);
     }
-        isEqual(location){
-        return this.x === location.x && this.y === location.y;
+
+    static getNewLocation(coordinate, direction){
+        let x = coordinate.x;
+        let y = coordinate.y;
+
+        if (direction === "ArrowUp") {y += -1;}
+        else if (direction === "ArrowDown") {y += 1;}
+        else if (direction === "ArrowLeft") {x += -1;}
+        else if (direction === "ArrowRight") {x += 1;}
+
+        return new Coordinate(x,y);
+    }
+
+    isEqual(location){
+    return this.x === location.x && this.y === location.y;
+    }
+    getDistance(coordinate){
+        return Math.abs(this.x - coordinate.x) + Math.abs(this.y - coordinate.y);
     }
 }
 
@@ -71,6 +87,7 @@ class Field {
                         new Coordinate(17, 15),
                         new Coordinate(18, 15)] //location along H,W
                         ];
+        // Create a 2D Array of [height][width];
         this.state = new Array(h);
         for (let i = 0; i < h; i++) {
             this.state[i] = new Array(w);
@@ -107,10 +124,12 @@ class Field {
     }
 
     placeSnake(snake) {
+        // Populates our 2D Array with values for our snake;
+        let [headValue, segValue] = snake === this.p1 ? [1,2] : [3,4];
         const head = snake.pos[0];
-        this.state[head.y][head.x] = 2;
+        this.state[head.y][head.x] = headValue;
         for (const segment of snake.pos.slice(1)) {
-            this.state[segment.y][segment.x] = 1;
+            this.state[segment.y][segment.x] = segValue;
         }
     }
     placeApple(apple){
@@ -133,8 +152,7 @@ class Snake {
             direction = this.direction
         }
         let currHead = this.pos[0];
-        let [newx, newy] = currHead.takeStep(direction);
-        let newHead = new Coordinate(newx, newy);
+        let newHead = currHead.takeStep(direction);
         this.pos.splice(0, 0, newHead);
         this.score -= 1;
         this.deleteTail();
@@ -186,8 +204,9 @@ class Snake {
     }
 }
 
-export {Field, Snake, Apple, Player};
+export {Field, Snake, Apple, Player, Coordinate};
 
 
 /*
-module.exports = {Field, Snake, Player, ComputerPlayer};*/
+module.exports = {Field, Snake, Player, Coordinate};
+*/
