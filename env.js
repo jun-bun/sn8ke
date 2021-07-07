@@ -177,28 +177,41 @@ class Snake {
      * @param {number} field.height - height of field.
      * @param {number} field.width - The width of field.
      */
-    checkCollision(field) {
-        let head = this.pos[0];
-        if (head.x >= field.width || head.x < 0 || head.y >= field.height || head.y < 0) {
-            console.log(field);
-            console.log(head.y);
-            this.score -= 40000;
-            return true;
-        }
+
+    isCollidingWithBarrier(field){
+        const head = this.pos[0];
+        return head.x >= field.width || head.x < 0 || head.y >= field.height || head.y < 0;
+
+    }
+    isCollidingWithItself(){
+        const head = this.pos[0];
         for (let segment of this.pos.slice(1)) {
-            if (head.x == segment.x && head.y == segment.y) {
-                this.score -= 40000;
+            if (head.x === segment.x && head.y ===segment.y) {
                 return true;
             }
         }
-        let opponent = (this === field.p1) ? field.p2 : field.p1;
-        //console.log(opponent);
+        return false;
+    }
+    isCollidingWithOpponent(field){
+        const head = this.pos[0];
+        const opponent = (this === field.p1) ? field.p2 : field.p1;
         for (let segment of opponent.pos) {
-            //console.log([head, segment]);
-            if (head.x == segment.x && head.y == segment.y) {
-                this.score -= 40000;
+            if (head.x === segment.x && head.y === segment.y) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    isColliding(field){
+        return this.isCollidingWithBarrier(field)
+                || this.isCollidingWithItself()
+                || this.isCollidingWithOpponent(field);
+    }
+    checkCollision(field) {
+        if (this.isColliding(field)){
+            this.score += -40000;
+            return true;
         }
         return false;
     }
