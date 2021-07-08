@@ -35,14 +35,15 @@ var player = new Player();
 var computer = new Player();
 var ai = new BasicAi();
 ai.setplayer(computer);
-var field = new Field(20,20);
+var field = new Field(10,10);
 field.reset();
 player.field = field;
 computer.field = field;
 player.snake = field.p1;
 computer.snake = field.p2;
 drawField(field);
-var observations;
+var playerResults = null;
+var observations = ai.player.getObservations();
 var timer;
 timer = setInterval(playGame, 500);
 function playGame(){
@@ -73,7 +74,7 @@ function playGame(){
         // Cancel the default action to avoid it being handled twice
         event.preventDefault();
     }, true);
-    var playerResulets = player.makeMove(player.snake.direction);
+    playerResults = player.makeMove(player.snake.direction);
     observations = ai.makeMove(ai.step(observations));
 
     //p1.moveSnake(p1.direction);
