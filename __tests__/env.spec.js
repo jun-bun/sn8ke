@@ -1,5 +1,3 @@
-//import {Field, Snake, Apple} from '../env.js';
-
 const {Field, Snake, Apple} = require('../env');
 
 describe("---", ()=>{
