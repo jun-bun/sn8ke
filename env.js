@@ -82,10 +82,10 @@ class Field {
                         new Coordinate(4, 5),
                         new Coordinate(3, 5),
                         new Coordinate(2, 5)],
-                        [new Coordinate(15, 15),
-                        new Coordinate(16, 15),
-                        new Coordinate(17, 15),
-                        new Coordinate(18, 15)] //location along H,W
+                        [new Coordinate(this.width-5,this.height-5),
+                        new Coordinate(this.width-4, this.height-4),
+                        new Coordinate(this.width-3, this.height-3),
+                        new Coordinate(this.width-2, this.height-2)] //location along H,W
                         ];
         // Create a 2D Array of [height][width];
         this.state = new Array(h);
@@ -186,7 +186,7 @@ class Snake {
     isCollidingWithItself(){
         const head = this.pos[0];
         for (let segment of this.pos.slice(1)) {
-            if (head.x === segment.x && head.y ===segment.y) {
+            if (head.x === segment.x && head.y === segment.y) {
                 return true;
             }
         }
@@ -204,9 +204,9 @@ class Snake {
     }
 
     isColliding(field){
-        return this.isCollidingWithBarrier(field)
+        return (this.isCollidingWithBarrier(field)
                 || this.isCollidingWithItself()
-                || this.isCollidingWithOpponent(field);
+                || this.isCollidingWithOpponent(field));
     }
     checkCollision(field) {
         if (this.isColliding(field)){
