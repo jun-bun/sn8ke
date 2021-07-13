@@ -51,6 +51,9 @@ class Apple{
     getlocation(){
         return this.location;
     }
+    setlocation(coordinate){
+        this.location = coordinate;
+    };
 }
 
 class Player{
@@ -217,9 +220,9 @@ class Snake {
     }
 }
 
-export {Field, Snake, Apple, Player, Coordinate};
-
+export {Field, Snake, Player, Apple, Coordinate};
 
 /*
-module.exports = {Field, Snake, Player, Coordinate};
+
+module.exports = {Field, Snake, Player, Apple, Coordinate};
 */

@@ -35,7 +35,7 @@ var player = new Player();
 var computer = new Player();
 var ai = new BasicAi();
 ai.setplayer(computer);
-var field = new Field(10,10);
+var field = new Field(15,15);
 field.reset();
 player.field = field;
 computer.field = field;
