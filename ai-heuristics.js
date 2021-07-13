@@ -1,9 +1,11 @@
 import {Coordinate, Snake, Field, Player} from "./env.js";
 
+// const {Coordinate, Snake, Field, Player} = require('./env');
+
 function objectsToCoordinate(objects) {
     let coordinates = []
 
-    for (let item in objects) {
+    for (let item of objects) {
         let coordinate = new Coordinate(item.x, item.y);
         coordinates.push(coordinate);
     }
@@ -20,11 +22,10 @@ class BasicAi{
     makeMove(direction){
         return this.player.makeMove(direction);
     }
-    step(observations){
+    _getValidActions(observations) {
         if (!observations) {
-            return this.actions[2];
-        }
-        else {
+            return [this.actions[2]];
+        } else {
             const apple = observations["apple"];
             const self = observations["self"];
             const opponent = observations["opponent"];
@@ -35,20 +36,25 @@ class BasicAi{
             field.p1 = newSnake;
             field.p2 = opponent;
             newSnake.pos.unshift(null);
-            for (let action of this.actions){
+            for (let action of this.actions) {
                 let newHead = newSnake.pos[1].takeStep(action);
                 newSnake.pos[0] = newHead;
-                if (!newSnake.isColliding(field)){
+                if (!newSnake.isColliding(field)) {
                     let distanceFromApple = newHead.getDistance(apple.location);
                     if (!closest || distanceFromApple <= closest) {
-                        validActions.push(action);
+                        validActions.push([action, distanceFromApple]);
                         closest = distanceFromApple;
                     }
                 }
-                console.log(newSnake.isColliding(field), action, validActions, closest);
             }
-            return validActions[Math.floor(Math.random()*validActions.length)];
+            validActions = validActions.filter(action => action[1] === closest);
+            validActions = validActions.map(x => x[0]);
+            return validActions;
         }
+    }
+    step(observations) {
+        const validActions = this._getValidActions(observations);
+        return validActions[Math.floor(Math.random() * validActions.length)];
     }
 }
 
@@ -56,5 +62,5 @@ export {BasicAi}
 
 
 /*
-module.exports = {BasicAi, reverseAction};
+module.exports = {BasicAi, objectsToCoordinate};
 */
